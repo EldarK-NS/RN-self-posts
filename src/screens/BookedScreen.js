@@ -1,11 +1,11 @@
 import React from 'react'
-import { View, StyleSheet, Text, Button, FlatList } from 'react-native';
-import { Post } from '../components/Post';
 import { DATA } from './../data';
+import { PostList } from './../components/PostList';
 
 
 
 export const BookedScreen = ({ navigation }) => {
+
     const openPostHandler = (post) => {
         navigation.navigate('Post', {
             postId: post.id,
@@ -14,20 +14,9 @@ export const BookedScreen = ({ navigation }) => {
         })
     }
 
-    return (
-        <View style={styles.wrapper}>
-            <FlatList
-                data={DATA.filter(post => post.booked)}
-                renderItem={({ item }) => <Post post={item} onOpen={openPostHandler} />}
-                keyExtractor={post => post.id.toString()}
-            />
-        </View>
-    )
+    return <PostList data={DATA.filter(post => post.booked)} onOpen={openPostHandler} />
+
 }
 
-const styles = StyleSheet.create({
-    wrapper: {
-        padding: 10
-    }
-})
+
 

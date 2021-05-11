@@ -4,13 +4,14 @@ import { StyleSheet, Text, View, Platform } from 'react-native';
 import AppLoading from 'expo-app-loading'
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { bootstrap } from './src/bootstrap'
 import { PostNavigator, BookedNavigator } from './src/Navigation/AppNavigation';
 import { Ionicons } from '@expo/vector-icons'
 import { THEME } from './src/theme';
 
 
-const Tab = createBottomTabNavigator();
+const Tab = Platform.OS === 'android' ? createMaterialBottomTabNavigator() : createBottomTabNavigator();
 
 export default function App() {
   const [isReady, setIsReady] = useState(false)
@@ -29,6 +30,8 @@ export default function App() {
   return (
     <NavigationContainer>
       <Tab.Navigator
+        barStyle={{ backgroundColor: THEME.MAIN_COLOR }}
+        shifting={true}
         screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;
