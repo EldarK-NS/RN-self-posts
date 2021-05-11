@@ -1,17 +1,17 @@
 
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Platform } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import AppLoading from 'expo-app-loading'
 import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { bootstrap } from './src/bootstrap'
-import { PostNavigator, BookedNavigator } from './src/Navigation/AppNavigation';
 import { Ionicons } from '@expo/vector-icons'
 import { THEME } from './src/theme';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import TabNavigator from './src/Navigation/TabNavigator';
+import { CreateNavigator, AboutNavigator } from './src/Navigation/AppNavigation';
 
 
-const Tab = Platform.OS === 'android' ? createMaterialBottomTabNavigator() : createBottomTabNavigator();
+
 
 export default function App() {
   const [isReady, setIsReady] = useState(false)
@@ -25,33 +25,34 @@ export default function App() {
       />
     )
   }
-
+  const Drawer = createDrawerNavigator();
 
   return (
     <NavigationContainer>
-      <Tab.Navigator
-        barStyle={{ backgroundColor: THEME.MAIN_COLOR }}
-        shifting={true}
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
-            let iconName;
-
-            if (route.name === 'All Posts') {
-              iconName = focused ? 'albums' : 'albums-outline';
-            } else if (route.name === 'Favorite') {
-              iconName = focused ? 'star' : 'star-outline';
-            }
-            return <Ionicons name={iconName} size={25} color={color} />;
-          },
-        })}
-        tabBarOptions={{
-          activeTintColor: THEME.MAIN_COLOR,
-          inactiveTintColor: 'gray',
-        }}
-      >
-        <Tab.Screen name='All Posts' component={PostNavigator} />
-        <Tab.Screen name="Favorite" component={BookedNavigator} />
-      </Tab.Navigator>
+      <Drawer.Navigator 
+      drawerContentOptions={{
+        activeTintColor: THEME.MAIN_COLOR,
+        itemStyle: { marginVertical: 10 },
+        labelStyle:{
+          fontFamily:'open-bold'
+        }
+      }}>
+        <Drawer.Screen name="My Blog!" component={TabNavigator}
+          options={{
+            drawerLabel: 'MAIN',
+            drawerIcon: ()=>(<Ionicons name='star' size={15}/>)
+          }} />
+        <Drawer.Screen name="About" component={AboutNavigator}
+          options={{
+            drawerLabel: 'ABOUT US'
+          }}
+        />
+        <Drawer.Screen name="Create" component={CreateNavigator}
+          options={{
+            drawerLabel: 'CREATE POST'
+          }}
+        />
+      </Drawer.Navigator>
     </NavigationContainer>
   );
 }

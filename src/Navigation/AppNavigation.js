@@ -1,21 +1,13 @@
 import React from 'react'
-import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { MainScreen } from '../screens/MainScreen'
 import { PostScreen } from '../screens/PostScreen'
 import { THEME } from '../theme';
 import { AppHeaderIcon } from '../components/AppHeaderIcon';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
-import {
-    createDrawerNavigator,
-    DrawerContentScrollView,
-    DrawerItemList,
-    DrawerItem,
-} from '@react-navigation/drawer';
-
 import { BookedScreen } from './../screens/BookedScreen';
-import { AboutScreen } from './../screens/AboutScreen';
 import { CreateScreen } from './../screens/CreateScreen';
+import { AboutScreen } from './../screens/AboutScreen';
 
 
 const Stack = createStackNavigator()
@@ -39,7 +31,7 @@ export const PostNavigator = () => {
                             <Item
                                 title='Take photo'
                                 iconName='camera'
-                                onPress={() => console.log('photo')} />
+                                onPress={() => navigation.navigate('Create')} />
                         </HeaderButtons>
                     ),
                     headerLeft: () => (
@@ -78,7 +70,7 @@ export const PostNavigator = () => {
 
 export const BookedNavigator = () => {
     return (
-        <Stack.Navigator initialRouteName='My Blog'
+        <Stack.Navigator initialRouteName='Favorite'
             screenOptions={{
                 headerStyle: {
                     backgroundColor: Platform.OS === 'android' ? THEME.MAIN_COLOR : '#fff',
@@ -86,30 +78,67 @@ export const BookedNavigator = () => {
                 headerTintColor: Platform.OS === 'android' ? '#fff' : THEME.MAIN_COLOR,
             }}>
             <Stack.Screen name='Favorite' component={BookedScreen}
-                options={{
+                options={({ navigation }) => ({
                     headerLeft: () => (
                         <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
                             <Item
                                 title='Toggle Drawer'
                                 iconName='menu'
-                                onPress={() => console.log('menu')} />
+                                onPress={() => navigation.toggleDrawer()} />
                         </HeaderButtons>
                     )
-                }}
+                })}
+            />
+        </Stack.Navigator>
+    )
+}
+export const CreateNavigator = () => {
+    return (
+        <Stack.Navigator initialRouteName='Create'
+            screenOptions={{
+                headerStyle: {
+                    backgroundColor: Platform.OS === 'android' ? THEME.MAIN_COLOR : '#fff',
+                },
+                headerTintColor: Platform.OS === 'android' ? '#fff' : THEME.MAIN_COLOR,
+            }}>
+            <Stack.Screen name='CREATE NEW POST' component={CreateScreen}
+                options={({ navigation }) => ({
+                    headerLeft: () => (
+                        <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+                            <Item
+                                title='Toggle Drawer'
+                                iconName='menu'
+                                onPress={() => navigation.toggleDrawer()} />
+                        </HeaderButtons>
+                    )
+                })}
+            />
+        </Stack.Navigator>
+    )
+}
+export const AboutNavigator = () => {
+    return (
+        <Stack.Navigator initialRouteName='About'
+            screenOptions={{
+                headerStyle: {
+                    backgroundColor: Platform.OS === 'android' ? THEME.MAIN_COLOR : '#fff',
+                },
+                headerTintColor: Platform.OS === 'android' ? '#fff' : THEME.MAIN_COLOR,
+            }}>
+            <Stack.Screen name='ABOUT PROJECT' component={AboutScreen}
+                options={({ navigation }) => ({
+                    headerLeft: () => (
+                        <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
+                            <Item
+                                title='Toggle Drawer'
+                                iconName='menu'
+                                onPress={() => navigation.toggleDrawer()} />
+                        </HeaderButtons>
+                    )
+                })}
             />
         </Stack.Navigator>
     )
 }
 
 
-const Drawer = createDrawerNavigator();
-
-export const MyDrawer = () => {
-    return (
-        <Drawer.Navigator initialRouteName="My Blog!">
-            <Drawer.Screen name="My Blog!" component={MainScreen} />
-            <Drawer.Screen name="About" component={AboutScreen} />
-            <Drawer.Screen name="Create" component={CreateScreen} />
-        </Drawer.Navigator>
-    );
-}
