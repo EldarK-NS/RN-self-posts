@@ -1,16 +1,15 @@
-import React, { useEffect, useCallback } from 'react'
+import React from 'react'
 import { View, StyleSheet, Text, Image, Button, ScrollView, Alert } from 'react-native';
 import { THEME } from './../theme';
-import { useDispatch, useSelector } from 'react-redux';
-import { toggleBooked } from '../store/actions/post'
+import { useSelector, useDispatch } from 'react-redux';
+import { removePost } from './../store/actions/post';
 
 
-export const PostScreen = ({ route }) => {
+
+export const PostScreen = ({ route, navigation }) => {
+    const dispatch = useDispatch()
     const { postId } = route.params
-
     const post = useSelector(state => state.post.allPosts.find(p => p.id === postId))
-
-    // const booked = useSelector(state => state.post.bookedPosts.some(post.id === postId))
 
     const removeHandler = () => {
         Alert.alert(
@@ -21,10 +20,18 @@ export const PostScreen = ({ route }) => {
                     text: "Cancel",
                     style: "cancel",
                 },
-                { text: 'Delete', style: 'destructive', onPress: () => { } }
+                {
+                    text: 'Delete', style: 'destructive', onPress: () => {
+                        navigation.navigate('My Blog')
+                        dispatch(removePost(postId))
+                    }
+                }
             ],
             { cancelable: false }
         )
+    }
+    if (!post) {
+        return null
     }
 
     return (
@@ -43,7 +50,8 @@ export const PostScreen = ({ route }) => {
 const styles = StyleSheet.create({
     image: {
         width: '100%',
-        height: 200
+        height: 250,
+        marginTop: 15
     },
     textWrap: {
         padding: 10

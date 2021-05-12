@@ -12,22 +12,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toggleBooked } from '../store/actions/post'
 
 const Stack = createStackNavigator()
-//! звездочка в избранных должна меняться при нажатии!!!! 84-slide
+
 export const PostNavigator = () => {
+    const state = useSelector(state => state.post.allPosts)
+    const icon = (data, route) => {
+        const post = data.find(d => d.id === route)
+        if (post.booked) {
+            return 'star'
+        } else {
+            return 'star-outline'
+        }
+    }
+
     const dispatch = useDispatch()
-    // const state = useSelector(state => state.post)
-    // // console.log(state)
-    // const Name = (data, item) => {
-    //     const post = data.find(p => p.id === item)
-    //     if (post.booked) {
-    //         return 'star'
-    //     } else {
-    //         return 'star-outline'
-    //     }
-    // }
-    // // console.log(iconName(state, 2))
-    const iconStar = 'star'
-    const iconStarOutline = 'star-outline'
     return (
         <Stack.Navigator initialRouteName='My Blog'
             screenOptions={{
@@ -69,9 +66,11 @@ export const PostNavigator = () => {
                         <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
                             <Item
                                 title='Take photo'
-                                iconName={route.params.booked ? iconStar : iconStarOutline}
-                                onPress={() => { dispatch(toggleBooked(route.params.postId)) }} />
-
+                                iconName={icon(state, route.params.postId)}
+                                onPress={() => {
+                                    const post = state.find(d => d.id === route.params.postId)
+                                    dispatch(toggleBooked(post))
+                                }} />
                         </HeaderButtons>
                     ),
                 })
