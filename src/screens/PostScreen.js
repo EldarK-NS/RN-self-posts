@@ -1,12 +1,16 @@
-import React from 'react'
+import React, { useEffect, useCallback } from 'react'
 import { View, StyleSheet, Text, Image, Button, ScrollView, Alert } from 'react-native';
-import { DATA } from './../data';
 import { THEME } from './../theme';
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleBooked } from '../store/actions/post'
 
 
-export const PostScreen = ({ navigation, route }) => {
+export const PostScreen = ({ route }) => {
     const { postId } = route.params
-    const post = DATA.find(p => p.id === postId)
+
+    const post = useSelector(state => state.post.allPosts.find(p => p.id === postId))
+
+    // const booked = useSelector(state => state.post.bookedPosts.some(post.id === postId))
 
     const removeHandler = () => {
         Alert.alert(

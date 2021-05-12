@@ -8,12 +8,24 @@ import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import { BookedScreen } from './../screens/BookedScreen';
 import { CreateScreen } from './../screens/CreateScreen';
 import { AboutScreen } from './../screens/AboutScreen';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleBooked } from '../store/actions/post'
 
 const Stack = createStackNavigator()
-
+//! звездочка в избранных должна меняться при нажатии!!!! 84-slide
 export const PostNavigator = () => {
-
+    const dispatch = useDispatch()
+    // const state = useSelector(state => state.post)
+    // // console.log(state)
+    // const Name = (data, item) => {
+    //     const post = data.find(p => p.id === item)
+    //     if (post.booked) {
+    //         return 'star'
+    //     } else {
+    //         return 'star-outline'
+    //     }
+    // }
+    // // console.log(iconName(state, 2))
     const iconStar = 'star'
     const iconStarOutline = 'star-outline'
     return (
@@ -58,7 +70,8 @@ export const PostNavigator = () => {
                             <Item
                                 title='Take photo'
                                 iconName={route.params.booked ? iconStar : iconStarOutline}
-                                onPress={() => console.log('photo')} />
+                                onPress={() => { dispatch(toggleBooked(route.params.postId)) }} />
+
                         </HeaderButtons>
                     ),
                 })
