@@ -33,7 +33,7 @@ export const PostNavigator = () => {
                 },
                 headerTintColor: Platform.OS === 'android' ? '#fff' : THEME.MAIN_COLOR,
             }}>
-            <Stack.Screen name='My Blog' component={MainScreen}
+            <Stack.Screen name='My Blog!' component={MainScreen}
                 options={({ navigation }) => ({
                     headerRight: () => (
                         <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
